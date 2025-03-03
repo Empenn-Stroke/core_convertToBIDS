@@ -11,9 +11,16 @@ def convert_to_BIDS(data, output_folder):
         source_path = item['source_path']
         subject_id = item['subject_id']
         acquisition_type = item['acquisition_type']
-        ext = os.path.splitext(source_path)[1]
-        bids_path = f"sub_{subject_id}/anat/sub_{subject_id}-acq_{acquisition_type}{ext}"
-        dest_path = os.path.join(output_folder, bids_path)
+        seg_acquisition_type = item['seg_acquisition_type']
+
+        if acquisition_type == "seg":
+            ext = os.path.splitext(source_path)[1]
+            bids_path = f"derivatives/sub-{subject_id}/anat/sub-{subject_id}_acq-{seg_acquisition_type}_seg{ext}"
+            dest_path = os.path.join(output_folder, bids_path)
+        else:
+            ext = os.path.splitext(source_path)[1]
+            bids_path = f"rawdata/sub-{subject_id}/anat/sub-{subject_id}_acq-{acquisition_type}{ext}"
+            dest_path = os.path.join(output_folder, bids_path)
 
         dest_dir = os.path.dirname(dest_path)
         if not os.path.exists(dest_dir):
@@ -23,4 +30,4 @@ def convert_to_BIDS(data, output_folder):
 
 explorer = RegexExplorer('sourcedata/', 'config.json')
 data = explorer.extract_info()
-convert_to_BIDS(data, output_folder='rawdata/')
+convert_to_BIDS(data, output_folder='BIDS/')

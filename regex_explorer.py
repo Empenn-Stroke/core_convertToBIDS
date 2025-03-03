@@ -22,9 +22,14 @@ class RegexExplorer:
                 if not match:
                     print(f"Failed to match {filename}")
                 if match:
+                    seg_acquisition_type = None
                     subject_id = match.group(1)
                     if re.findall(self.patterns["seg_regex"], filename):
                         acquisition_type = "seg"
+                        if re.search(self.patterns["T1_regex"], filename):
+                            seg_acquisition_type = "T1w"
+                        if re.search(self.patterns["FLAIR_regex"], filename):
+                            seg_acquisition_type = "FLAIR"
                     elif re.search(self.patterns["T1_regex"], filename):
                         acquisition_type = "T1w"
                     elif re.search(self.patterns["T2star_regex"], filename):
@@ -41,6 +46,7 @@ class RegexExplorer:
                     extracted.append({
                             "subject_id": subject_id,
                             "acquisition_type": acquisition_type,
+                            "seg_acquisition_type": seg_acquisition_type,
                             "filename": filename,
                             "source_path": os.path.join(root, filename)
                         })
