@@ -2,7 +2,7 @@ from regex_explorer import RegexExplorer
 import os
 import shutil
 
-def convert_to_BIDS(data, metadata, output_folder):
+def convert_to_BIDS(data, metadata, sourcedata_folder, output_folder):
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -33,7 +33,17 @@ def convert_to_BIDS(data, metadata, output_folder):
         if metadata is not None:
             metadata_dest = os.path.join(output_folder, "rawdata/participants.tsv")
             shutil.copy2(metadata, metadata_dest)
+    sourcedata_dest = os.path.join(output_folder, "sourcedata")
+    if not os.path.exists(sourcedata_dest):
+        os.makedirs(sourcedata_dest)
+    for item in os.listdir(sourcedata_folder):
+        s = os.path.join(sourcedata_folder, item)
+        d = os.path.join(sourcedata_dest, item)
+        if os.path.isdir(s):
+                shutil.copytree(s, d, dirs_exist_ok=True)
+        else:
+            shutil.copy2(s, d)
     
 explorer = RegexExplorer('sourcedata/', 'config.json')
 (data, metadata) = explorer.extract_info()
-convert_to_BIDS(data, metadata, output_folder='BIDS/')
+convert_to_BIDS(data, metadata, sourcedata_folder = 'sourcedata/', output_folder='BIDS/')

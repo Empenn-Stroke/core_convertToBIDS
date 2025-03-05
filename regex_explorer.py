@@ -31,6 +31,8 @@ class RegexExplorer:
                             seg_acquisition_type = "T1w"
                         if re.search(self.patterns["FLAIR_regex"], filename):
                             seg_acquisition_type = "FLAIR"
+                        if re.search(self.patterns["CT_regex"], filename):
+                            seg_acquisition_type = "CT"
                     elif re.search(self.patterns["T1_regex"], filename):
                         acquisition_type = "T1w"
                     elif re.search(self.patterns["T2star_regex"], filename):
