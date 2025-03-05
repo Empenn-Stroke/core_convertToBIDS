@@ -24,7 +24,7 @@ class RegexExplorer:
                     print(f"Failed to match {filename}")
                 if match:
                     seg_acquisition_type = None
-                    subject_id = match.group(1)
+                    subject_id = match.group(0)
                     if re.findall(self.patterns["seg_regex"], filename):
                         acquisition_type = "seg"
                         if re.search(self.patterns["T1_regex"], filename):
@@ -62,7 +62,7 @@ class RegexExplorer:
                     metadata = os.path.join(root, metadata_file)
                     break
             if metadata is not None : break
-        metadata = os.path.join(root, metadata_file)
+        if metadata is not None : metadata = os.path.join(root, metadata_file)
         return extracted, metadata
 
     def print_results(self):

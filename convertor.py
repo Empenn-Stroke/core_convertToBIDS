@@ -1,6 +1,7 @@
 from regex_explorer import RegexExplorer
 import os
 import shutil
+import argparse
 
 def convert_to_BIDS(data, metadata, sourcedata_folder, output_folder):
 
@@ -31,7 +32,11 @@ def convert_to_BIDS(data, metadata, sourcedata_folder, output_folder):
         shutil.copy2(source_path, dest_path)
 
         if metadata is not None:
-            metadata_dest = os.path.join(output_folder, "rawdata/participants.tsv")
+            ext = os.path.splitext(metadata)[-1]
+            metadata_dest = os.path.join(output_folder, "rawdata/participants"+ext)
+            metadata_dir = os.path.dirname(metadata_dest)
+            if not os.path.exists(metadata_dir):
+                os.makedirs(metadata_dir)
             shutil.copy2(metadata, metadata_dest)
     sourcedata_dest = os.path.join(output_folder, "sourcedata")
     if not os.path.exists(sourcedata_dest):
@@ -43,7 +48,17 @@ def convert_to_BIDS(data, metadata, sourcedata_folder, output_folder):
                 shutil.copytree(s, d, dirs_exist_ok=True)
         else:
             shutil.copy2(s, d)
-    
-explorer = RegexExplorer('sourcedata/', 'config.json')
-(data, metadata) = explorer.extract_info()
-convert_to_BIDS(data, metadata, sourcedata_folder = 'sourcedata/', output_folder='BIDS/')
+     
+def main():
+    parser = argparse.ArgumentParser(description="Convert data to BIDS format")
+    parser.add_argument('--sourcedata', type=str, required=True, help='Path to the source data folder')
+    parser.add_argument('--output', type=str, required=True, help='Path to the output folder')
+    parser.add_argument('--config', type=str, required=True, help='Path to the configuration file')
+    args = parser.parse_args()
+
+    explorer = RegexExplorer(args.sourcedata, args.config)
+    data, metadata = explorer.extract_info()
+    convert_to_BIDS(data, metadata, sourcedata_folder=args.sourcedata, output_folder=args.output)
+
+if __name__ == "__main__":
+    main()

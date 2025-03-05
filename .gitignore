@@ -2,3 +2,8 @@ sourcedata/
 rawdata/
 derivatives/
 __pycache__/
+BIDS/
+*.nii
+*.nii.gz
+ATLAS2/
+AVCPOSTIM/
