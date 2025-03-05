@@ -17,7 +17,7 @@ def convert_to_BIDS(data, metadata, sourcedata_folder, output_folder):
         if acquisition_type == "seg":
             ext = os.path.splitext(source_path)[1]
             if ext == ".gz": ext = ".nii.gz"
-            bids_path = f"derivatives/sub-{subject_id}/anat/sub-{subject_id}_acq-{seg_acquisition_type}_seg{ext}"
+            bids_path = f"derivatives/sub-{subject_id}/seg/sub-{subject_id}_acq-{seg_acquisition_type}_seg{ext}"
             dest_path = os.path.join(output_folder, bids_path)
         else:
             ext = os.path.splitext(source_path)[1]
