@@ -1,0 +1,11 @@
+{
+    "subject_id_regex": "(\\d{5})",
+    "T1_regex": "T1|T13D|t1",
+    "FLAIR_regex": "FLAIR|flair|flaire|Flair",
+    "T2star_regex": "T2star|T2etoile",
+    "T2_regex": "T2",
+    "seg_regex": "seg",
+    "CT_regex": "CT|CRANEHELICEs004a003|CRANENRs003a002",
+    "metadata_regex": "participants.tsv"
+}
+  
