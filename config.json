@@ -5,6 +5,7 @@
     "T2star_regex": "T2star|T2etoile",
     "T2_regex": "T2",
     "seg_regex": "seg",
-    "CT_regex": "CT|CRANEHELICEs004a003|CRANENRs003a002"
-  }
+    "CT_regex": "CT|CRANEHELICEs004a003|CRANENRs003a002",
+    "metadata_regex": "participants.tsv"
+}
   

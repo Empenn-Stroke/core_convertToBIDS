@@ -15,6 +15,7 @@ class RegexExplorer:
 
     def extract_info(self):
         extracted = []
+        metadata = None
         for root, _, files in os.walk(self.input_folder):
             for filename in files:
                 pattern = self.patterns["subject_id_regex"]
@@ -50,8 +51,17 @@ class RegexExplorer:
                             "filename": filename,
                             "source_path": os.path.join(root, filename)
                         })
-                    
-        return extracted
+        metadata = None
+        for root, _, files in os.walk(self.input_folder):
+            for filename in files:
+                match = re.match(self.patterns["metadata_regex"], filename)
+                if match:
+                    metadata_file = match.group(0)
+                    metadata = os.path.join(root, metadata_file)
+                    break
+            if metadata is not None : break
+        metadata = os.path.join(root, metadata_file)
+        return extracted, metadata
 
     def print_results(self):
         results = self.extract_info()

@@ -2,7 +2,7 @@ from regex_explorer import RegexExplorer
 import os
 import shutil
 
-def convert_to_BIDS(data, output_folder):
+def convert_to_BIDS(data, metadata, output_folder):
 
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -15,10 +15,12 @@ def convert_to_BIDS(data, output_folder):
 
         if acquisition_type == "seg":
             ext = os.path.splitext(source_path)[1]
+            if ext == ".gz": ext = ".nii.gz"
             bids_path = f"derivatives/sub-{subject_id}/anat/sub-{subject_id}_acq-{seg_acquisition_type}_seg{ext}"
             dest_path = os.path.join(output_folder, bids_path)
         else:
             ext = os.path.splitext(source_path)[1]
+            if ext == ".gz": ext = ".nii.gz"
             bids_path = f"rawdata/sub-{subject_id}/anat/sub-{subject_id}_acq-{acquisition_type}{ext}"
             dest_path = os.path.join(output_folder, bids_path)
 
@@ -28,6 +30,10 @@ def convert_to_BIDS(data, output_folder):
 
         shutil.copy2(source_path, dest_path)
 
+        if metadata is not None:
+            metadata_dest = os.path.join(output_folder, "rawdata/participants.tsv")
+            shutil.copy2(metadata, metadata_dest)
+    
 explorer = RegexExplorer('sourcedata/', 'config.json')
-data = explorer.extract_info()
-convert_to_BIDS(data, output_folder='BIDS/')
+(data, metadata) = explorer.extract_info()
+convert_to_BIDS(data, metadata, output_folder='BIDS/')
