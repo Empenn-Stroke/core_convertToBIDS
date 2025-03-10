@@ -1,0 +1,10 @@
+{
+    "subject_id_regex": "(\\d{3})",
+    "T1_regex": "T1",
+    "T2_regex": "T2",
+    "metadata_regex": "IXI.xls",
+    "seg_regex": "seg",
+    "CT_regex": "CT",
+    "FLAIR_regex": "FLAIR",
+    "T2star_regex": "T2star"
+}
